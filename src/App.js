@@ -1,13 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import Header from './common/header'
 
 export default () => {
     return (
-        <div
-            onClick={() => {
-                alert('hello..')
-            }}
-        >
-            hello!
-        </div>
+        <Fragment>
+            <Header />
+        </Fragment>
     )
 }

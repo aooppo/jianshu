@@ -3,10 +3,10 @@ import logo from '../../statics/logo.png'
 
 export const HeaderWrapper = styled.div`
     height: 56px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #0b0606;
 `
 
-export const Logo = styled.a.attrs({ href: '/' })`
+export const Logo = styled.div`
     background: url(${logo});
     background-size: contain;
     position: absolute;
@@ -18,10 +18,10 @@ export const Logo = styled.a.attrs({ href: '/' })`
 `
 
 export const Nav = styled.div`
-    width: 960px;
+    width: 65%;
     height: 100%;
     margin: 0 auto;
-    background: #fff;
+    // background: #fff;
     padding-right: 20px;
     box-sizing: border-box;
 `
@@ -33,7 +33,9 @@ export const NavItem = styled.div`
     height: 100%;
     font-size: 17px;
     margin: 0 auto;
-    color: #333;
+    color: #969696;
+    font-weight: bold;
+    text-decoration: none;
     &.left {
         float: left;
     }
@@ -53,7 +55,7 @@ export const SearchWrapper = styled.div`
     weight: 100px;
     float: left;
     position: relative;
-    .iconfont {
+    .zoom {
         position: absolute;
         right: 5px;
         bottom: 5px;
@@ -70,18 +72,18 @@ export const SearchWrapper = styled.div`
 
 export const SearchInfo = styled.div`
     position: absolute;
-    background: red;
     left: 0
     top: 56px;
-    width: 240px; 
+    width: 290px; 
     padding-left: 0;
     padding-top: 15px;
     margin-left: 10px;
-    background-color: #fff;
+    background-color: #3f3f3f;
     box-shadow: 0 0 8px rgba(0,0,0,.2);
+    z-index: 1;
 `
 export const SearchInfoTitle = styled.span`
-    width: 140px;
+    width: 60px;
     margin-left: 10px;
     margin-bottom: 15px;
     line-height: 20px;
@@ -93,11 +95,10 @@ export const SearchInfoItem = styled.a`
     border: 1px solid #ddd;
     padding: 0 5px;
     font-size: 12px;
-    color: #787878;
+    color: #ddd;
     border-radius: 3px;
     display: block;
     float: left;
-    // margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
 `
@@ -113,6 +114,15 @@ export const SearchInfoSwitch = styled.span`
     line-height: 20px;
     font-size: 12px;
     color: #969696;
+    width: 70px;
+    .spin {
+        display: inline-block;
+        font-size: 12px;
+        margin-right: 2px;
+        width: 20px;
+        transition: all 0.2s ease-in;
+        transform-origin: center center;
+    }
 `
 
 export const NavSearch = styled.input.attrs({
@@ -127,8 +137,9 @@ export const NavSearch = styled.input.attrs({
     border: none;
     outline: none;
     border-radius: 19px;
-    background: #eee;
+    background: #4f4f4f;
     font-size: 14px;
+    color: #dcdcdc;
     &.slide-enter {
         transition: all 0.2s ease-out;
     }

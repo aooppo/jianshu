@@ -1,2 +1,7 @@
 export const SEARCH_FOCUS = 'header/SEARCH_FOCUS'
 export const SEARCH_BLUR = 'header/SEARCH_BLUR'
+export const CHANGE_HEADER_LIST = 'header/CHANGE_HEADER_LIST'
+export const ADD_HEADER_LIST = 'header/ADD_HEADER_LIST'
+export const SEARCH_INFO_ENTER = 'header/SEARCH_INFO_ENTER'
+export const SEARCH_INFO_LEAVE = 'header/SEARCH_INFO_LEAVE'
+export const SWITCH_SEARCH_INFO = 'header/SWITCH_SEARCH_INFO'

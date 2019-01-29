@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
     HeaderWrapper,
     Logo,
@@ -20,32 +21,59 @@ import { actionCreators } from './store'
 
 class Header extends Component {
     getSearchInfo = () => {
-        if (this.props.focused) {
+        const {
+            focused,
+            list,
+            page,
+            totalPage,
+            mouseIn,
+            handleMouseEnter,
+            handleMouseLeave,
+            switchSearchInfo,
+        } = this.props
+        const jsList = list.toJS()
+        const data = []
+        if (jsList.length) {
+            for (let i = page * 10; i < (page + 1) * 10; i++) {
+                let item = jsList[i]
+                data.push(<SearchInfoItem key={item}>{item}</SearchInfoItem>)
+            }
+        }
+        if (focused || mouseIn) {
             return (
-                <SearchInfo>
+                <SearchInfo
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
                     <SearchInfoTitle>热门搜索</SearchInfoTitle>
-                    <SearchInfoSwitch>换一换</SearchInfoSwitch>
-                    <SearchInfoList>
-                        <SearchInfoItem>教育</SearchInfoItem>
-                        <SearchInfoItem>java</SearchInfoItem>
-                        <SearchInfoItem>投资</SearchInfoItem>
-                        <SearchInfoItem>react</SearchInfoItem>
-                        <SearchInfoItem>教育2</SearchInfoItem>
-                        <SearchInfoItem>java3</SearchInfoItem>
-                        <SearchInfoItem> AAA</SearchInfoItem>
-                        <SearchInfoItem>reacts</SearchInfoItem>
-                        <SearchInfoItem> ufo</SearchInfoItem>
-                        <SearchInfoItem>ENG</SearchInfoItem>
-                    </SearchInfoList>
+                    <SearchInfoSwitch
+                        onClick={() =>
+                            switchSearchInfo(page, totalPage, this.spinIcon)
+                        }
+                    >
+                        <span
+                            ref={icon => {
+                                this.spinIcon = icon
+                            }}
+                            className="iconfont spin"
+                        >
+                            &#xe851;
+                        </span>
+                        <span>换一换</span>
+                    </SearchInfoSwitch>
+                    <SearchInfoList>{data}</SearchInfoList>
                 </SearchInfo>
             )
         }
     }
+
     render() {
-        const { focused, handleBlur, handleFocus } = this.props
+        const { focused, list, handleBlur, handleFocus } = this.props
         return (
             <HeaderWrapper>
-                <Logo />
+                <Link to="/">
+                    <Logo />
+                </Link>
                 <Nav>
                     <NavItem className="left active">首页</NavItem>
                     <NavItem className="left">下载App</NavItem>
@@ -61,13 +89,15 @@ class Header extends Component {
                         >
                             <NavSearch
                                 className={focused ? 'focused' : ''}
-                                onFocus={handleFocus}
+                                onFocus={() => handleFocus(list)}
                                 onBlur={handleBlur}
                             />
                         </CSSTransition>
                         <span
                             className={
-                                focused ? 'focused iconfont' : 'iconfont'
+                                focused
+                                    ? 'focused iconfont zoom'
+                                    : 'iconfont zoom'
                             }
                         >
                             &#xe60b;
@@ -88,14 +118,41 @@ class Header extends Component {
 }
 const mapState = state => ({
     focused: state.getIn(['header', 'focused']),
+    list: state.getIn(['header', 'list']),
+    totalPage: state.getIn(['header', 'totalPage']),
+    page: state.getIn(['header', 'page']),
+    mouseIn: state.getIn(['header', 'mouseIn']),
 })
 
 const mapDispatch = dispatch => ({
-    handleFocus() {
+    handleFocus(list) {
         dispatch(actionCreators.handleFocus())
+        if (list.size === 0) {
+            dispatch(actionCreators.getSearchList())
+        }
     },
     handleBlur() {
         dispatch(actionCreators.handleBlur())
+    },
+    handleMouseEnter() {
+        dispatch(actionCreators.handleMouseEnter())
+    },
+    handleMouseLeave() {
+        dispatch(actionCreators.handleMouseLeave())
+    },
+    switchSearchInfo(page, totalPage, spinIcon) {
+        let originAngle = spinIcon.style.transform.replace(/[^0-9]/gi, '')
+        if (originAngle) {
+            originAngle = parseInt(originAngle, 10)
+        } else {
+            originAngle = 0
+        }
+        spinIcon.style.transform = `rotate(${originAngle + 360}deg)`
+        if (page + 1 < totalPage) {
+            dispatch(actionCreators.switchSearchInfo(page + 1))
+        } else {
+            dispatch(actionCreators.switchSearchInfo(0))
+        }
     },
 })
 export default connect(
